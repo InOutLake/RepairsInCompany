@@ -1,0 +1,47 @@
+﻿@model List<RepairsInCompany.Model.ViewModel.EquipmentListVM>;
+@{
+    Layout = "_Layout";
+}
+
+<div class="container">
+    <form method="post">
+        <table class="table table-striped table-bordered" style="margin: 10px; margin-right: 10px">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Registration date</th>
+                    <th>Was ever broken</th>
+                    <th>Is in repair</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var e in Model)
+                {
+                    <tr>
+                        <td>
+                            <input type="radio" class="form-check-input" name="equipmentName" value="@e.Name" />
+                            <label for="equipmentName">@e.Name</label>
+                        </td>
+                        @if (e.StartDateTime is null)
+                        {
+                            <td>Registration closed</td>
+                        }
+                        else
+                        {
+                            <td>@e.StartDateTime.ToString()</td>
+                        }
+                        <td>@(e.WasBroken ? "Yes" : "No")</td>
+                        <td>@(e.IsInRepair ? "Yes" : "No")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="row justify-content-end">
+            <div class="col-6 text-end">
+                @Html.ActionLink("Add equipemnt", "AddEquipment", "Main", htmlAttributes: new {@class = "btn btn-primary"})
+                <button class="btn btn-primary" type="submit" formaction="@Url.Action("RepairFork")">Repaired/Breakdown</button>
+                <button class="btn btn-primary" type="submit" formaction="@Url.Action("RegistrationFork")">Register/Close registration</button>
+            </div>
+        </div>
+    </form>
+</div>

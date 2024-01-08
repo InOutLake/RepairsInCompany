@@ -1,0 +1,13 @@
+﻿@{
+    @model string;
+    Layout = "_Layout";
+}
+
+
+<div class="row flex-d justify-content-center align-content-center">
+    <div class="col-4">
+        <h2>@Model</h2>
+            @Html.ActionLink("Schedule", "ScheduleMonthGraph", "Main", htmlAttributes: new {@class = "btn btn-primary"})
+            @Html.ActionLink("Equipment List", "EquipmentList", "Main", htmlAttributes: new { @class="btn btn-primary"})
+    </div>
+</div>

@@ -1,0 +1,13 @@
+﻿@{
+    @model string;
+    Layout = "_Layout";
+}
+
+
+<div class="row flex-d justify-content-center align-content-center">
+    <div class="col-3">
+        <h2>Are you shure you want to mark "@Model" repaired?</h2>
+        @Html.ActionLink("Yes", "RepairConfirmation", "Main", new {equipmentName = Model, confirmed = true}, new {@class = "btn btn-primary"})
+        <button onclick="goBack()" class="btn btn-primary">No</button>
+    </div>
+</div>

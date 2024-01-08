@@ -1,0 +1,92 @@
+﻿@model Dictionary<string, List<int>>;
+
+
+@{
+    Layout = "_Layout";
+    DateTime currentDate = DateTime.Now;
+    DateTime observableMonthDate = ViewBag.observableMonthDate;
+    int daysCount = DateTime.DaysInMonth(observableMonthDate.Year, observableMonthDate.Month);
+    var names = Model.Keys.ToList();
+    var schedule = Model.Values.ToList(); //contains numbers of the days that repair is on
+}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-3">
+            <form method="post">
+                <input type="month" id="calendar" name="observableMonthDate" value="@observableMonthDate.ToString("yyyy-MM")">
+                <button class="align-left btn btn-primary" type="submit" action=>&#8635</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="container">
+        <form method="post">
+            <table class="table table-striped table-bordered" style="width: 100%">
+                <thead>
+                    <tr>
+                        <th style="border-right: 0.5px black solid; border-bottom: 0.5px black solid">Name</th>
+                        @for (int i = 1; i <= daysCount; i++) 
+                    {
+                        if (currentDate.ToString("yyyy-MM") == observableMonthDate.ToString("yyyy-MM") && i == currentDate.Day)
+                        {
+                            <th style="border-bottom: 0.5px black solid; background-color: #F5816F">@i</th>
+                        }
+                        else
+                        {
+                            <th style="border-bottom: 0.5px black solid">@i</th>
+                        }
+                    }
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int j = 0; j < names.Count; j++)
+                    {
+                        <tr>
+                            <td style="border-right: 0.5px black solid">
+                                <input type="radio" class="form-check-input" name="equipmentName" value="@names[j]"/>
+                                <label class="form-check-label" for="equipmentName">@names[j]</label>
+                            </td>
+                            @for (int i = 1; i <= daysCount; i++)
+                            {
+                                if (schedule[j].Any(x => x == i))
+                                {
+                                    if (currentDate.ToString("yyyy-MM") == observableMonthDate.ToString("yyyy-MM") && i == currentDate.Day)
+                                    {
+                                        <td style="background-color: #ccccff"></td>
+                                    }
+                                    else
+                                    {
+                                        <td style="background: skyblue"></td>
+                                    }
+                                }
+                                else
+                                {
+                                    if (currentDate.ToString("yyyy-MM") == observableMonthDate.ToString("yyyy-MM") && i == currentDate.Day)
+                                    {
+                                        <td style="background-color: #F4B0AB"></td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                }
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="row justify-content-end">
+                <div class="col-6 text-end">
+                    @Html.ActionLink("Add equipemnt", "AddEquipment", "Main", htmlAttributes: new {@class = "btn btn-primary"})
+                    <button class="btn btn-primary" type="submit" formaction="@Url.Action("RepairFork")">Repaired/Breakdown</button>
+                    <button class="btn btn-primary" type="submit" formaction="@Url.Action("RegistrationFork")">Register/Close registration</button>
+                </div>
+            </div>
+            <div class="row justify-content-end" style="margin-top: 5px">
+                <div class="col-3 text-end">
+                    @Html.ActionLink("Update schedule", "UpdateScheduleConfirmation", "Main", htmlAttributes: new {@class = "btn btn-success"})
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
